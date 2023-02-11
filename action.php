@@ -157,24 +157,36 @@ if(isset($_POST["getProduct"])){
 if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isset($_POST["search"])){
 	if(isset($_POST["get_seleted_Category"])){
 		$id = $_POST["cat_id"];
-		$sql = "SELECT * FROM products,categories WHERE product_cat = '$id' AND product_cat=cat_id";
+		$sql = "SELECT * FROM products,categories WHERE product_cat = ? AND product_cat= ?";
+		$x ="cat_id";
+		$stmt = $con->prepare($sql); 
+        $stmt->bind_param("ss",$id,$x);
         
 	}else if(isset($_POST["selectBrand"])){
 		$id = $_POST["brand_id"];
-		$sql = "SELECT * FROM products,categories WHERE product_brand = '$id' AND product_cat=cat_id";
+		
+		
+		$sql = "SELECT * FROM products,categories WHERE product_brand = ? AND product_cat= ?";
 	}else {
         
+		$x ="cat_id";
+		$stmt = $con->prepare($sql); 
+        $stmt->bind_param("ss",$id,$x);
+		
 		$keyword = $_POST["keyword"];
         header('Location:store.php');
 		$sql = "SELECT * FROM products,categories WHERE product_cat= ? AND product_keywords LIKE ?";
        $stmt = $conn->prepare($sql); 
-         $stmt->bind_param("ss",cat_id,$keyword);
-         $stmt->execute();
-		 $result = $stmt->get_result(); // get the mysqli result
+	   $keyword="%$keyword%";
+        $x =cat_id;
+        $stmt->bind_param("ss",$x,$keyword);
+       
+		 // get the mysqli result
 	}
-	
-	$run_query = mysqli_query($con,$result);
-	while($row=mysqli_fetch_array($run_query)){
+	   $stmt->execute();
+	 $result = $stmt->get_result();
+	//$run_query = mysqli_query($con,$result);
+	  while ($row = $result->fetch_assoc()){
 			$pro_id    = $row['product_id'];
 			$pro_cat   = $row['product_cat'];
 			$pro_brand = $row['product_brand'];
