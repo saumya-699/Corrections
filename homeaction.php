@@ -182,7 +182,7 @@ $keyword = $_POST["keyword"];
 		$sql = "SELECT * FROM products,categories WHERE product_cat= ? AND product_keywords LIKE ?";
 		$keyword="%$keyword%";
         $x =cat_id;
-		$stmt = $conn->prepare($sql); 
+		$stmt = $con->prepare($sql); 
         $stmt->bind_param("ss",$x,$keyword); // get the mysqli result
          //$user = $result->fetch_assoc(); // fetch data   
 		
