@@ -160,7 +160,7 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 		$sql = "SELECT * FROM products,categories WHERE product_cat = ? AND product_cat= ?";
 		$x ="cat_id";
 		$stmt = $con->prepare($sql); 
-        $stmt->bind_param("ss",$id,$x);
+        $stmt-> bind_param("ss",$id,$x);
         
 	}else if(isset($_POST["selectBrand"])){
 		$id = $_POST["brand_id"];
